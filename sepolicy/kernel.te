@@ -43,7 +43,7 @@ allow kernel sdcard_type:file { read write };
 # Fixes CTS tests:
 #  * android.os.storage.cts.StorageManagerTest#testMountAndUnmountObbNormal
 #  * android.os.storage.cts.StorageManagerTest#testMountAndUnmountTwoObbs
-allow kernel app_data_file:file read;
+allow kernel app_data_file:file {read write};
 
 ###
 ### neverallow rules

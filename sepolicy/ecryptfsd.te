@@ -1,0 +1,38 @@
+type ecryptfsd, domain;
+type ecryptfsd_exec, exec_type, file_type;
+type ecryptfsd_data_file, file_type, data_file_type;
+
+init_daemon_domain(ecryptfsd)
+net_domain(ecryptfsd)
+
+allow ecryptfsd cgroup:dir { create write add_name };
+allow ecryptfsd self:capability { setgid setuid net_admin net_raw net_bind_service };
+allow ecryptfsd self:packet_socket create_socket_perms;
+allow ecryptfsd self:netlink_route_socket nlmsg_write;
+allow ecryptfsd shell_exec:file rx_file_perms;
+allow ecryptfsd system_file:file rx_file_perms;
+# For /proc/sys/net/ipv4/conf/*/promote_secondaries
+allow ecryptfsd proc_net:file write;
+allow ecryptfsd ecryptfsd_prop:property_service set;
+allow ecryptfsd pan_result_prop:property_service set;
+unix_socket_connect(ecryptfsd, property, init)
+
+type_transition ecryptfsd system_data_file:{ dir file } ecryptfsd_data_file;
+allow ecryptfsd ecryptfsd:dir create_dir_perms;
+allow ecryptfsd ecryptfsd_data_file:file create_file_perms;
+
+# PAN connections
+allow ecryptfsd netd:fd use;
+allow ecryptfsd netd:fifo_file rw_file_perms;
+allow ecryptfsd netd:{ dgram_socket_class_set unix_stream_socket } { read write };
+allow ecryptfsd netd:{ netlink_kobject_uevent_socket netlink_route_socket netlink_nflog_socket } { read write };
+allow ecryptfsd key-util:key {write};
+allow ecryptfsd key-util_exec:file {getattr execute read open execute_no_trans};
+allow ecryptfsd key-util_exec:key {write};
+allow ecryptfsd ecryptfsd:key {read write link search};
+allow ecryptfsd device:chr_file rw_file_perms;
+allow ecryptfsd system_server:unix_stream_socket { connectto };
+allow ecryptfsd untrusted_app:unix_stream_socket { connectto };
+allow ecryptfsd system_app:unix_stream_socket { connectto };
+allow ecryptfsd radio:unix_stream_socket { connectto };
+allow ecryptfsd bluetooth:unix_stream_socket { connectto };

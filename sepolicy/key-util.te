@@ -1,0 +1,16 @@
+# dex2oat
+type key-util, domain;
+type key-util_exec, exec_type, file_type;
+
+#allow dex2oat dalvikcache_data_file:file write;
+#allow keystore_cli installd:fd use;
+
+# Read already open asec_apk_file file descriptors passed by installd.
+# Also allow reading unlabeled files, to allow for upgrading forward
+# locked APKs.
+#allow dex2oat asec_apk_file:file read;
+#allow keystore_cli unlabeled:file read;
+#binder_use(keystore_cli)
+#use_keystore(keystore_cli)
+allow key-util self:key {write};
+allow key-util key-util_exec:file {getattr execute};
