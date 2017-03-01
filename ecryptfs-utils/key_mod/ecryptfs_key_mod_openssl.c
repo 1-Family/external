@@ -30,6 +30,9 @@
  * do not wish to do so, delete this exception statement from your
  * version.  If you delete this exception statement from all source
  * files in the program, then also delete it here.
+ *
+ * Modifications Copyright (C) 2011-2017 TheCTO Technological Entrepreneurship & Consulting LTD
+ *
  */
 
 #include <fcntl.h>
